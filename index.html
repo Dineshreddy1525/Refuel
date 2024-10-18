@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Delivery App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header with Navigation Links -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Feedback</a></li>
+                <li><a href="#">Track Order</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Landing Page -->
+    <section class="landing">
+        <div class="container">
+            <!-- Image for Fuel Delivery -->
+            <img src="https://th.bing.com/th/id/R.b254b758860503bb8587265495abd9a7?rik=ihkxLlEg48Zabw&riu=http%3a%2f%2fwww.adweek.com%2fcore%2fwp-content%2fuploads%2f2017%2f03%2fRF4Logo.png&ehk=2VhFFzcXrV7cq3%2bYg6c2WeLeG1lP33%2bGlCiQzOYFc6E%3d&risl=&pid=ImgRaw&r=0" alt="Fuel Delivery" class="banner-img">
+
+            <h1>Fuel Delivery at Your Doorstep</h1>
+            <p>Select your fuel type, quantity, delivery time, and location.</p>
+
+            <!-- Fuel Type Selection -->
+            <label for="fuelType">Choose Fuel Type:</label>
+            <select id="fuelType">
+                <option value="petrol" data-price="100">Regular Petrol - ₹100/litre</option>
+                <option value="diesel" data-price="90">Diesel - ₹90/litre</option>
+                <option value="premium" data-price="120">Premium Petrol - ₹120/litre</option>
+            </select>
+
+            <!-- Quantity Selection -->
+            <label for="quantity">Select Quantity (Litres):</label>
+            <input type="number" id="quantity" value="1" min="1">
+
+            <!-- Date and Time Selection -->
+            <label for="deliveryDate">Select Delivery Date:</label>
+            <input type="date" id="deliveryDate">
+
+            <label for="deliveryTime">Select Delivery Time:</label>
+            <input type="time" id="deliveryTime">
+
+            <!-- Location Input -->
+            <label for="location">Delivery Location:</label>
+            <input type="text" id="location" placeholder="Enter your address">
+
+            <!-- Total Price Display -->
+            <p>Total Price: ₹<span id="totalPrice">100</span></p>
+
+            <!-- Order Button -->
+            <button onclick="orderFuel()">Order Now</button>
+        </div>
+    </section>
+
+    <!-- Order Confirmation Section -->
+    <section id="confirmation" class="hidden">
+        <div class="container">
+            <h2>Order Confirmed!</h2>
+            <p>Your fuel will be delivered shortly. Thank you for choosing us!</p>
+            <p id="orderSummary"></p>
+
+            <!-- Image after Order Confirmation -->
+            <img src="https://via.placeholder.com/600x300" alt="Fuel Delivered" class="confirmation-img">
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="hidden">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="mailto:support.refuel@gmail.com">support.refuel@gmail.com</a></p>
+        </div>
+    </section>
+
+    <script>
+        // Calculate total price based on selected fuel type and quantity
+        document.getElementById('fuelType').addEventListener('change', calculatePrice);
+        document.getElementById('quantity').addEventListener('input', calculatePrice);
+
+        function calculatePrice() {
+            const fuelType = document.getElementById('fuelType');
+            const pricePerLitre = fuelType.options[fuelType.selectedIndex].getAttribute('data-price');
+            const quantity = document.getElementById('quantity').value;
+            const totalPrice = pricePerLitre * quantity;
+            document.getElementById('totalPrice').textContent = totalPrice;
+        }
+
+        // Order fuel and show confirmation
+        function orderFuel() {
+            const fuelType = document.getElementById('fuelType').value;
+            const quantity = document.getElementById('quantity').value;
+            const totalPrice = document.getElementById('totalPrice').textContent;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const deliveryTime = document.getElementById('deliveryTime').value;
+            const location = document.getElementById('location').value;
+
+            if (deliveryDate === "" || deliveryTime === "" || location === "") {
+                alert("Please select a delivery date, time, and provide a location.");
+                return;
+            }
+
+            document.querySelector('.landing').style.display = 'none';
+            document.querySelector('#confirmation').classList.remove('hidden');
+
+            document.getElementById('orderSummary').textContent = `You ordered ${quantity} litre(s) of ${fuelType} for ₹${totalPrice}. Delivery scheduled on ${deliveryDate} at ${deliveryTime} to ${location}.`;
+        }
+    </script>
+</body>
+</html>
